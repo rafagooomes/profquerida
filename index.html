@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Filmes Indie | Mini SPA</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fefcea, #f1daff);
+            color: #333;
+        }
+
+        nav {
+            background: #4a148c;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.2em;
+            padding: 12px 20px;
+            margin: 0 10px;
+            background: #7b1fa2;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: #9c27b0;
+        }
+
+        .pagina {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: auto;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .filmes-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .filme {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 220px;
+            transition: transform 0.3s;
+        }
+
+        .filme:hover {
+            transform: translateY(-5px);
+        }
+
+        .filme img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .filme h3 {
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="aftersun.html" wm-link="aftersun.html" wm-destino=".pagina">Aftersun</a>
+        <a href="lost.html" wm-link="lost.html" wm-destino=".pagina">Lost in Translation</a>
+        <a href="waves.html" wm-link="waves.html" wm-destino=".pagina">Waves</a>
+        <a href="bling.html" wm-link="bling.html" wm-destino=".pagina">The Bling Ring</a>
+        <a href="honey.html" wm-link="honey.html" wm-destino=".pagina">American Honey</a>
+    </nav>
+
+    <div class="pagina">
+        <h1>✨ Bem-vindo ao Universo dos Filmes Indie ✨</h1>
+        <p style="margin-top: 10px;">Escolha um filme abaixo para explorar mais.</p>
+
+        <div class="filmes-grid">
+            <div class="filme">
+                <img src="https://upload.wikimedia.org/wikipedia/en/e/e8/Aftersun_poster.png" alt="Aftersun">
+                <h3>Aftersun</h3>
+            </div>
+            <div class="filme">
+                <img src="https://upload.wikimedia.org/wikipedia/en/4/4c/Lost_in_Translation_poster.jpg" alt="Lost in Translation">
+                <h3>Lost in Translation</h3>
+            </div>
+            <div class="filme">
+                <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Waves_%282019_film%29.png" alt="Waves">
+                <h3>Waves</h3>
+            </div>
+            <div class="filme">
+                <img src="https://upload.wikimedia.org/wikipedia/en/4/44/The_Bling_Ring_Poster.jpg" alt="The Bling Ring">
+                <h3>The Bling Ring</h3>
+            </div>
+            <div class="filme">
+                <img src="https://upload.wikimedia.org/wikipedia/en/3/3e/American_Honey_poster.png" alt="American Honey">
+                <h3>American Honey</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navegarViaAjax(url, seletor, push = true) {
+            if (!url || !seletor) return
+            const elemento = document.querySelector(seletor)
+            fetch(url)
+                .then(resp => resp.text())
+                .then(html => {
+                    elemento.innerHTML = html
+                    if (push) {
+                        history.pushState({ seletor }, "Página Ajax", url)
+                    }
+                })
+        }
+
+        document.querySelectorAll('[wm-link]').forEach(link => {
+            const url = link.getAttribute('wm-link')
+            const seletorDestino = link.getAttribute('wm-destino')
+
+            link.onclick = e => {
+                e.preventDefault()
+                navegarViaAjax(url, seletorDestino)
+            }
+        })
+
+        window.onpopstate = e => {
+            if (e.state) {
+                navegarViaAjax(window.location.href, e.state.seletor, false)
+            }
+        }
+    </script>
+</body>
+</html>
+
